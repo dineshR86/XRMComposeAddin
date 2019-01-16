@@ -1,0 +1,2 @@
+D:\UpWorks\XRMComposeAddin\XRMComposeAddin\obj\Debug\XRMComposeAddin.csprojAssemblyReference.cache
+D:\UpWorks\XRMComposeAddin\XRMComposeAddin\obj\Debug\XRMComposeAddin.csproj.CoreCompileInputs.cache

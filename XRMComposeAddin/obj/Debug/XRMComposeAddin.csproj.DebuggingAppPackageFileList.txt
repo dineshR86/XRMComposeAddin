@@ -1,0 +1,2 @@
+bin\Debug\OfficeAppManifests\XRMComposeAddinManifest.xml
+D:\UpWorks\XRMComposeAddin\XRMComposeAddin\bin\Debug\XRMComposeAddin.debugapp
