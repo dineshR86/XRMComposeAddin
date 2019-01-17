@@ -42,6 +42,7 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="XRMComposeAddinManifest\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{88f232fe-0aba-4cb8-b4f2-2135ab17ab40}</SharePointProjectItemId>
     </None>

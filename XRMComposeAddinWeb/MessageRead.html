@@ -25,106 +25,45 @@
     <!-- link rel="stylesheet" href="Content/fabric.components.min.css" -->
 </head>
 <body>
-    <div id="content-header">
-        <div class="padding">
-            <p class="ms-font-xl ms-fontColor-themeDarkAlt ms-fontWeight-semilight">All properties</p>
+    <div class="container col-sm">
+        <div class="alert alert-success" role="alert" id="asuccess" style="display:none"></div>
+        <div class="alert alert-danger" role="alert" id="afailure" style="display:none"></div>
+
+        <div class="form-group">
+            <label for="sitecollections">Cases</label>
+            <select class="form-control" id="sitecollections">
+                <option value="" selected>-select-</option>
+            </select>
+            <small id="sitecollectionhelp" class="form-text text-muted">Please select a sitecollection</small>
         </div>
-    </div>
-    <div id="content-main" class="ms-Grid">
-        <div class="ms-Grid-row">
-            <div class="ms-Grid-col ms-u-sm12">
-                <h2 class="ms-font-l">Office.context.mailbox.Item properties</h2>
-                <div class="ms-Table">
-                    <div class="ms-Table-row">
-                        <span class="ms-Table-cell">Property</span>
-                        <span class="ms-Table-cell">Value</span>
-                    </div>
-                    <div class="ms-Table-row">
-                        <span class="ms-Table-cell ms-fontWeight-semibold">dateTimeCreated</span>
-                        <span id="dateTimeCreated" class="ms-Table-cell"></span>
-                    </div>
-                    <div class="ms-Table-row">
-                        <span class="ms-Table-cell ms-fontWeight-semibold">dateTimeModified</span>
-                        <span id="dateTimeModified" class="ms-Table-cell"></span>
-                    </div>
-                    <div class="ms-Table-row">
-                        <span class="ms-Table-cell ms-fontWeight-semibold">itemClass</span>
-                        <span id="itemClass" class="ms-Table-cell"></span>
-                    </div>
-                    <div class="ms-Table-row">
-                        <span class="ms-Table-cell ms-fontWeight-semibold">itemId</span>
-                        <span id="itemId" class="ms-Table-cell"></span>
-                    </div>
-                    <div class="ms-Table-row">
-                        <span class="ms-Table-cell ms-fontWeight-semibold">itemType</span>
-                        <span id="itemType" class="ms-Table-cell"></span>
-                    </div>
-                </div>
-            </div>
+        <div class="form-group" id="drives" style="display:none">
+            <label for="drivesselect">Drives</label>
+            <select class="form-control" id="drivesselect">
+                <option value="select" selected>-select-</option>
+
+            </select>
+            <small id="listhelp" class="form-text text-muted">Please select a List</small>
+        </div>
+        <div class="form-group" id="folderselect" style="display:none">
+            <label for="libraryfolders">Folders</label>
+            <select class="form-control" id="libraryfolders">
+                <option value="" selected>-select-</option>
+
+            </select>
+            <small id="listhelp" class="form-text text-muted">Please select a Folder</small>
         </div>
 
-        <div id="message-props" class="ms-Grid-row hidden">
-            <div class="ms-Grid-col ms-u-sm12">
-                <h2 class="ms-font-l">Office.context.mailbox.Message properties</h2>
-                <div class="ms-Table">
-                    <div class="ms-Table-row">
-                        <span class="ms-Table-cell">Property</span>
-                        <span class="ms-Table-cell">Value</span>
-                    </div>
-                    <div class="ms-Table-row">
-                        <span class="ms-Table-cell ms-fontWeight-semibold">attachments</span>
-                        <span id="attachments" class="ms-Table-cell"></span>
-                    </div>
-                    <div class="ms-Table-row">
-                        <span class="ms-Table-cell ms-fontWeight-semibold">cc</span>
-                        <span id="cc" class="ms-Table-cell"></span>
-                    </div>
-                    <div class="ms-Table-row">
-                        <span class="ms-Table-cell ms-fontWeight-semibold">conversationId</span>
-                        <span id="conversationId" class="ms-Table-cell"></span>
-                    </div>
-                    <div class="ms-Table-row">
-                        <span class="ms-Table-cell ms-fontWeight-semibold">from</span>
-                        <span id="from" class="ms-Table-cell"></span>
-                    </div>
-                    <div class="ms-Table-row">
-                        <span class="ms-Table-cell ms-fontWeight-semibold">internetMessageId</span>
-                        <span id="internetMessageId" class="ms-Table-cell"></span>
-                    </div>
-                    <div class="ms-Table-row">
-                        <span class="ms-Table-cell ms-fontWeight-semibold">normalizedSubject</span>
-                        <span id="normalizedSubject" class="ms-Table-cell"></span>
-                    </div>
-                    <div class="ms-Table-row">
-                        <span class="ms-Table-cell ms-fontWeight-semibold">sender</span>
-                        <span id="sender" class="ms-Table-cell"></span>
-                    </div>
-                    <div class="ms-Table-row">
-                        <span class="ms-Table-cell ms-fontWeight-semibold">subject</span>
-                        <span id="subject" class="ms-Table-cell"></span>
-                    </div>
-                    <div class="ms-Table-row">
-                        <span class="ms-Table-cell ms-fontWeight-semibold">to</span>
-                        <span id="to" class="ms-Table-cell"></span>
-                    </div>
-                </div>
-            </div>
+        <div class="form-group" id="attachmentSelect" style="display:none">
+           
+        </div>
+
+
+        <div id="savesection" style="display:none">
+
+            <div> <button type="submit" class="btn btn-primary float-right" id="btnSave">Save</button></div>
         </div>
     </div>
 
-    <!-- FabricUI component used for displaying notifications -->
-    <div class="ms-MessageBanner" style="position:absolute;bottom: 0;">
-        <div class="ms-MessageBanner-content">
-            <div class="ms-MessageBanner-text">
-                <div class="ms-MessageBanner-clipper">
-                    <div class="ms-font-m-plus ms-fontWeight-semibold" id="notificationHeader"></div>
-                    <div class="ms-font-m ms-fontWeight-semilight" id="notificationBody"></div>
-                </div>
-            </div>
-            <button class="ms-MessageBanner-expand" style="display:none"><i class="ms-Icon ms-Icon--chevronsDown"></i> </button>
-            <div class="ms-MessageBanner-action"></div>
-        </div>
-        <button class="ms-MessageBanner-close"> <i class="ms-Icon ms-Icon--x"></i> </button>
-    </div>
+    <div class="loader" style="display:none"></div>
 </body>
 </html>
