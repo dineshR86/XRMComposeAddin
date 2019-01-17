@@ -5,6 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <title></title>
     <script src="Scripts/jquery-1.9.1.js" type="text/javascript"></script>
+    <script src="Scripts/popper.min.js" type="text/javascript"></script>
+    <script src="Scripts/bootstrap.bundle.min.js" type="text/javascript"></script>
 
     <!-- For the JavaScript APIs for Office, go to https://aka.ms/officejs-overview to learn more. -->
     <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js" type="text/javascript"></script>
@@ -12,17 +14,10 @@
     <!-- To enable offline debugging using a local reference to Office.js, use: -->
     <!-- <script src="Scripts/Office/MicrosoftAjax.js" type="text/javascript"></script>  -->
     <!-- <script src="Scripts/Office/1/office.js" type="text/javascript"></script>  -->
-
     <script src="MessageRead.js" type="text/javascript"></script>
-    <script src="Scripts/FabricUI/MessageBanner.js" type="text/javascript"></script>
 
-    <!-- For the Office UI Fabric, go to https://aka.ms/office-ui-fabric to learn more. -->
-    <link rel="stylesheet" href="https://appsforoffice.microsoft.com/fabric/2.1.0/fabric.min.css" />
-    <link rel="stylesheet" href="https://appsforoffice.microsoft.com/fabric/2.1.0/fabric.components.min.css" />
-
-    <!-- To enable the offline use of Office UI Fabric, use: -->
-    <!-- link rel="stylesheet" href="Content/fabric.min.css" -->
-    <!-- link rel="stylesheet" href="Content/fabric.components.min.css" -->
+    <link rel="stylesheet" href="Content/Bootstrap/bootstrap.min.css" />
+    <link rel="stylesheet" href="MessageRead.css" />
 </head>
 <body>
     <div class="container col-sm">
@@ -30,31 +25,50 @@
         <div class="alert alert-danger" role="alert" id="afailure" style="display:none"></div>
 
         <div class="form-group">
-            <label for="sitecollections">Cases</label>
-            <select class="form-control" id="sitecollections">
+            <label for="cases">Cases</label>
+            <select class="form-control" id="cases">
                 <option value="" selected>-select-</option>
+                <option value="">Case1</option>
+                <option value="">Case2</option>
+                <option value="">Case3</option>
             </select>
-            <small id="sitecollectionhelp" class="form-text text-muted">Please select a sitecollection</small>
+            <small id="sitecollectionhelp" class="form-text text-muted">Please select a Case</small>
         </div>
-        <div class="form-group" id="drives" style="display:none">
-            <label for="drivesselect">Drives</label>
-            <select class="form-control" id="drivesselect">
-                <option value="select" selected>-select-</option>
-
-            </select>
-            <small id="listhelp" class="form-text text-muted">Please select a List</small>
+        <div class="form-group" id="dvSaveEmail" style="display:none">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" value="" id="chkSaveEmail" />
+                    Save Email
+                </label>
+            </div>
+            <div id="dvcategory" style="display:none">
+                <label for="categories">Category</label>
+                <select class="form-control" id="categories">
+                    <option value="" selected>-select-</option>
+                    <option value="">Category 1</option>
+                    <option value="">Category 2</option>
+                    <option value="">Category 3</option>
+                </select>
+            </div>
+            
         </div>
-        <div class="form-group" id="folderselect" style="display:none">
-            <label for="libraryfolders">Folders</label>
-            <select class="form-control" id="libraryfolders">
-                <option value="" selected>-select-</option>
+        <div class="form-group" id="dvSaveAttachments" style="display:none">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" value="" id="chkSaveAttachment" />
+                    Save Attachments
+                </label>
+            </div>
+            <div id="dvFolder" style="display:none">
+                <label for="folders">Folders</label>
+                <select class="form-control" id="folders">
+                    <option value="" selected>-select-</option>
+                    <option value="">Folder 1</option>
+                    <option value="">Folder 2</option>
+                    <option value="">Folder 3</option>
+                </select>
+            </div>
 
-            </select>
-            <small id="listhelp" class="form-text text-muted">Please select a Folder</small>
-        </div>
-
-        <div class="form-group" id="attachmentSelect" style="display:none">
-           
         </div>
 
 

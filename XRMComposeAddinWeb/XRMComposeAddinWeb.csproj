@@ -207,6 +207,7 @@
     <Content Include="MessageRead.css" />
     <Content Include="MessageRead.html" />
     <Content Include="MessageRead.js" />
+    <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\FabricUI\MessageBanner.js" />
     <Content Include="Scripts\jquery-1.9.1.js" />
     <Content Include="Scripts\jquery-1.9.1.min.js" />
@@ -487,6 +488,7 @@
     <Content Include="Scripts\Office\metadata\endpoints.xml" />
     <Content Include="Scripts\Office\metadata\features.xml" />
     <Content Include="Scripts\Office\MicrosoftAjax.js" />
+    <Content Include="Scripts\popper.min.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

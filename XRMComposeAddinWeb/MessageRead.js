@@ -6,12 +6,34 @@
   // The Office initialize function must be run each time a new page is loaded.
   Office.initialize = function (reason) {
     $(document).ready(function () {
-      var element = document.querySelector('.ms-MessageBanner');
-      messageBanner = new fabric.MessageBanner(element);
-      messageBanner.hideBanner();
-      loadProps();
+        $("#cases").change((event) => {
+            $("#dvSaveEmail").css("display", "block");
+            $("#dvSaveAttachments").css("display", "block");
+            $("#savesection").css("display", "block");
+        });
+
+        $("#chkSaveEmail").change(function(){
+            if ($(this).is(":checked")) {
+                $("#dvcategory").css("display", "block");
+            }
+            else {
+                $("#dvcategory").css("display", "none");
+            }
+        });
+
+        $("#chkSaveAttachment").change(function() {
+            
+            if ($(this).is(":checked")) {
+                $("#dvFolder").css("display", "block");
+            }
+            else {
+                $("#dvFolder").css("display", "none");
+            }
+        });
     });
-  };
+    };
+
+    
 
   // Take an array of AttachmentDetails objects and build a list of attachment names, separated by a line-break.
   function buildAttachmentsString(attachments) {
