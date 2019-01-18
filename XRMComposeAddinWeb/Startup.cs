@@ -1,4 +1,4 @@
-﻿using SaveToSharepointWeb.App_Start;
+﻿using XRMComposeAddinWeb.App_Start;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Jwt;
 using Microsoft.Owin.Security.OAuth;
@@ -6,9 +6,9 @@ using Owin;
 using System.Configuration;
 using System.IdentityModel.Tokens;
 
-[assembly: OwinStartup(typeof(SaveToSharepointWeb.Startup))]
+[assembly: OwinStartup(typeof(XRMComposeAddinWeb.Startup))]
 
-namespace SaveToSharepointWeb
+namespace XRMComposeAddinWeb
 {
     public class Startup
     {

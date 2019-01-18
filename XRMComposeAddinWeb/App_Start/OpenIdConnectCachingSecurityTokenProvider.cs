@@ -4,7 +4,7 @@ using System.IdentityModel.Tokens;
 using System.Threading;
 using Microsoft.IdentityModel.Protocols;
 
-namespace SaveToSharepointWeb.App_Start
+namespace XRMComposeAddinWeb.App_Start
 {
     public class OpenIdConnectCachingSecurityTokenProvider : IIssuerSecurityTokenProvider
     {

@@ -1,6 +1,6 @@
 ﻿using System.Web.Http;
 
-namespace SaveToSharepointWeb
+namespace XRMComposeAddinWeb
 {
     public class WebApiConfig
     {
