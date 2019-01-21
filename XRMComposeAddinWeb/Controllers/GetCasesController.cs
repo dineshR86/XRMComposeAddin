@@ -68,7 +68,7 @@ namespace XRMComposeAddinWeb.Controllers
         private async Task<IHttpActionResult> GetCases()
         {
             var bootstrapContext = ClaimsPrincipal.Current.Identities.First().BootstrapContext as BootstrapContext;
-            List<CaseInfo> sites = new List<CaseInfo>();
+            List<CaseInfo> cases = new List<CaseInfo>();
             if (bootstrapContext != null)
             {
                 // Use MSAL to invoke the on-behalf-of flow to exchange token for a Graph token
@@ -98,16 +98,19 @@ namespace XRMComposeAddinWeb.Controllers
                     new QueryOption("expand","fields($select=id,title,billable)")
                 };
 
-                var cases = await graphClient.Sites["cloudmission.sharepoint.com,fe171266-80d5-48e2-aac1-dd25051f3418,b1aa755f-a790-4cc3-9c20-a83dc3e92428"].Lists["3370e94e-b0a6-43da-8a86-64e7470ca1dc"].Items.Request(options).GetAsync();
+                var lcases = await graphClient.Sites["cloudmission.sharepoint.com,fe171266-80d5-48e2-aac1-dd25051f3418,b1aa755f-a790-4cc3-9c20-a83dc3e92428"].Lists["3370e94e-b0a6-43da-8a86-64e7470ca1dc"].Items.Request(options).GetAsync();
 
-                foreach(var lcase in cases){
-                    var fieldset = lcase.Fields.AdditionalData["1"];
-                    var id = lcase.Id;
+                foreach(var lcase in lcases){
+                    cases.Add(new CaseInfo()
+                    {
+                        Title= lcase.Fields.AdditionalData["Title"].ToString(),
+                        ID=lcase.Id
+                    });
                 }
                 
             }
 
-            return ResponseMessage(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(JsonConvert.SerializeObject(sites, Formatting.Indented), Encoding.UTF8, "application/json") });
+            return ResponseMessage(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(JsonConvert.SerializeObject(cases, Formatting.Indented), Encoding.UTF8, "application/json") });
 
         }
 

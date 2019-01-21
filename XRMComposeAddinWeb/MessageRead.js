@@ -7,8 +7,10 @@
   // The Office initialize function must be run each time a new page is loaded.
   Office.initialize = function (reason) {
       $(document).ready(function () {
+          $(".loader").css("display", "block");
           getAccessToken();
-        $("#cases").change((event) => {
+
+        $("#drpcases").change((event) => {
             $("#dvSaveEmail").css("display", "block");
             $("#dvSaveAttachments").css("display", "block");
             $("#savesection").css("display", "block");
@@ -62,6 +64,7 @@
                 }
                 else {
                     console.log("error while fetching access token " + result.error.code);
+                    $(".loader").css("display", "none");
                 }
             });
         }
@@ -77,14 +80,15 @@
             },
             contentType: "application/json; charset=utf-8"
         }).done(function (data) {
-            console.log("Fetched the sitecollection data");
+            console.log("Fetched the Cases data");
             $.each(data, (index, value) => {
-                //$("#sitecollections").append('<option value="' + value.Id + '">' + value.Name + '</option>');
+                $("#drpcases").append('<option value="' + value.ID + '">' + value.Title + '</option>');
             });
             $(".loader").css("display", "none");
         }).fail(function (error) {
-            console.log("Fail to fetch site collections");
+            console.log("Fail to fetch cases");
             console.log(error);
+            $(".loader").css("display", "none");
         });
     }
 
