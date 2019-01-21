@@ -1,11 +1,13 @@
 ﻿(function () {
   "use strict";
 
-  var messageBanner;
+    var messageBanner;
+    var ssoToken;
 
   // The Office initialize function must be run each time a new page is loaded.
   Office.initialize = function (reason) {
-    $(document).ready(function () {
+      $(document).ready(function () {
+          getAccessToken();
         $("#cases").change((event) => {
             $("#dvSaveEmail").css("display", "block");
             $("#dvSaveAttachments").css("display", "block");
@@ -30,10 +32,61 @@
                 $("#dvFolder").css("display", "none");
             }
         });
+        
     });
     };
 
-    
+
+    function getAccessToken() {
+        if (Office.context.auth !== undefined && Office.context.auth.getAccessTokenAsync !== undefined) {
+            Office.context.auth.getAccessTokenAsync(function (result) {
+                if (result.status === "succeeded") {
+                    console.log("token was fetched ");
+                    ssoToken = result.value;
+                    getCases(result.value);
+
+                } else if (result.error.code === 13007 || result.error.code === 13005) {
+                    console.log("fetching token by force consent");
+                    Office.context.auth.getAccessTokenAsync({ forceConsent: true }, function (result) {
+                        if (result.status === "succeeded") {
+                            console.log("token was fetched");
+                            ssoToken = result.value;
+                            getCases(result.value);
+
+                        }
+                        else {
+                            console.log("No token was fetched " + result.error.code);
+                            //getSiteCollections();
+                        }
+                    });
+                }
+                else {
+                    console.log("error while fetching access token " + result.error.code);
+                }
+            });
+        }
+    }
+
+    function getCases(token) {
+
+        $.ajax({
+            type: "GET",
+            url: "api/GetCases",
+            headers: {
+                "Authorization": "Bearer " + token
+            },
+            contentType: "application/json; charset=utf-8"
+        }).done(function (data) {
+            console.log("Fetched the sitecollection data");
+            $.each(data, (index, value) => {
+                //$("#sitecollections").append('<option value="' + value.Id + '">' + value.Name + '</option>');
+            });
+            $(".loader").css("display", "none");
+        }).fail(function (error) {
+            console.log("Fail to fetch site collections");
+            console.log(error);
+        });
+    }
 
   // Take an array of AttachmentDetails objects and build a list of attachment names, separated by a line-break.
   function buildAttachmentsString(attachments) {

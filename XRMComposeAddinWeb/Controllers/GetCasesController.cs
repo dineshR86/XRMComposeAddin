@@ -93,11 +93,17 @@ namespace XRMComposeAddinWeb.Controllers
                             return Task.FromResult(0);
                         }));
 
-                
+                List<QueryOption> options = new List<QueryOption>()
+                {
+                    new QueryOption("expand","fields($select=id,title,billable)")
+                };
 
-                var sitecollections = await graphClient.Sites.Request()
+                var cases = await graphClient.Sites["cloudmission.sharepoint.com,fe171266-80d5-48e2-aac1-dd25051f3418,b1aa755f-a790-4cc3-9c20-a83dc3e92428"].Lists["3370e94e-b0a6-43da-8a86-64e7470ca1dc"].Items.Request(options).GetAsync();
 
-
+                foreach(var lcase in cases){
+                    var fieldset = lcase.Fields.AdditionalData["1"];
+                    var id = lcase.Id;
+                }
                 
             }
 
