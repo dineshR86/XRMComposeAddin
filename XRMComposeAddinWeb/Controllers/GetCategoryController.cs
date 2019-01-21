@@ -18,7 +18,7 @@ using System.Text;
 
 namespace XRMComposeAddinWeb.Controllers
 {
-    public class GetCasesController : ApiController
+    public class GetCategoryController : ApiController
     {
         // GET api/<controller>
         public async Task<IHttpActionResult> Get()
@@ -62,15 +62,15 @@ namespace XRMComposeAddinWeb.Controllers
                 return BadRequest("Authorization is not valid");
             }
 
-            return await GetCases();
+            return await GetCategories();
         }
 
-        private async Task<IHttpActionResult> GetCases()
+        private async Task<IHttpActionResult> GetCategories()
         {
             var bootstrapContext = ClaimsPrincipal.Current.Identities.First().BootstrapContext as BootstrapContext;
             List<CaseInfo> cases = new List<CaseInfo>();
             var siteId = ConfigurationManager.AppSettings["ida:SiteId"];
-            var caselistId= ConfigurationManager.AppSettings["ida:CaseListId"];
+            var categorylistId = ConfigurationManager.AppSettings["ida:CategoryListId"];
             if (bootstrapContext != null)
             {
                 // Use MSAL to invoke the on-behalf-of flow to exchange token for a Graph token
@@ -97,25 +97,24 @@ namespace XRMComposeAddinWeb.Controllers
 
                 List<QueryOption> options = new List<QueryOption>()
                 {
-                    new QueryOption("expand","fields($select=id,title,billable)")
+                    new QueryOption("expand","fields($select=id,title)")
                 };
 
-                var lcases = await graphClient.Sites[siteId].Lists[caselistId].Items.Request(options).GetAsync();
+                var lcategories = await graphClient.Sites[siteId].Lists[categorylistId].Items.Request(options).GetAsync();
 
-                foreach(var lcase in lcases){
+                foreach (var lcategorie in lcategories)
+                {
                     cases.Add(new CaseInfo()
                     {
-                        Title= lcase.Fields.AdditionalData["Title"].ToString(),
-                        ID=lcase.Id
+                        Title = lcategorie.Fields.AdditionalData["Title"].ToString(),
+                        ID = lcategorie.Id
                     });
                 }
-                
+
             }
 
             return ResponseMessage(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(JsonConvert.SerializeObject(cases, Formatting.Indented), Encoding.UTF8, "application/json") });
 
         }
-
-
     }
 }

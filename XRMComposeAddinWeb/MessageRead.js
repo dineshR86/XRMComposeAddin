@@ -46,6 +46,7 @@
                     console.log("token was fetched ");
                     ssoToken = result.value;
                     getCases(result.value);
+                    getCategory(result.value);
 
                 } else if (result.error.code === 13007 || result.error.code === 13005) {
                     console.log("fetching token by force consent");
@@ -54,7 +55,6 @@
                             console.log("token was fetched");
                             ssoToken = result.value;
                             getCases(result.value);
-
                         }
                         else {
                             console.log("No token was fetched " + result.error.code);
@@ -83,6 +83,28 @@
             console.log("Fetched the Cases data");
             $.each(data, (index, value) => {
                 $("#drpcases").append('<option value="' + value.ID + '">' + value.Title + '</option>');
+            });
+            $(".loader").css("display", "none");
+        }).fail(function (error) {
+            console.log("Fail to fetch cases");
+            console.log(error);
+            $(".loader").css("display", "none");
+        });
+    }
+
+    function getCategory(token) {
+
+        $.ajax({
+            type: "GET",
+            url: "api/GetCategory",
+            headers: {
+                "Authorization": "Bearer " + token
+            },
+            contentType: "application/json; charset=utf-8"
+        }).done(function (data) {
+            console.log("Fetched the Cases data");
+            $.each(data, (index, value) => {
+                $("#drpcategories").append('<option value="' + value.ID + '">' + value.Title + '</option>');
             });
             $(".loader").css("display", "none");
         }).fail(function (error) {
