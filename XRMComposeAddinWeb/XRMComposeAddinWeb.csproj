@@ -497,10 +497,12 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\GetCasesController.cs" />
     <Compile Include="Controllers\GetCategoryController.cs" />
+    <Compile Include="Controllers\SaveEmailController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\CaseInfo.cs" />
+    <Compile Include="Models\SaveEmailRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
