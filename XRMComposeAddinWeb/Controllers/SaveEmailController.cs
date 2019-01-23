@@ -20,6 +20,7 @@ namespace XRMComposeAddinWeb.Controllers
 {
     public class SaveEmailController : ApiController
     {
+        private HttpClient _saveHttpClient = new HttpClient();
         [HttpPost]
         public async Task<IHttpActionResult> Post([FromBody]SaveEmailRequest request)
         {
@@ -67,6 +68,8 @@ namespace XRMComposeAddinWeb.Controllers
 
         private async Task<IHttpActionResult> SaveEmail(SaveEmailRequest request)
         {
+            string siteid = ConfigurationManager.AppSettings["ida:SiteId"];
+            string listId= ConfigurationManager.AppSettings["ida:OutlookEmailListId"];
             var bootstrapContext = ClaimsPrincipal.Current.Identities.First().BootstrapContext as BootstrapContext;
             if (bootstrapContext != null)
             {
@@ -92,10 +95,30 @@ namespace XRMComposeAddinWeb.Controllers
                             return Task.FromResult(0);
                         }));
 
-                var savedItem=await graphClient.Sites[""].Lists[""].
+                string requestUrl = string.Format("https://graph.microsoft.com/v1.0/sites/{0}/lists('{1}')/items", siteid, listId);
+                SaveEmailPost data = new SaveEmailPost()
+                {
+                    fields = request
+                };
+                var posdata = JsonConvert.SerializeObject(data);
+                HttpRequestMessage requestMsg = new HttpRequestMessage(new HttpMethod("POST"), requestUrl);
+                requestMsg.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                requestMsg.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authResult.AccessToken);
+                requestMsg.Content = new StringContent(posdata, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = _saveHttpClient.SendAsync(requestMsg).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    return Ok();
+                }
+                else
+                {
+                    return BadRequest("Error while saving the item. Please contact the administrator.");
+                }
             }
-
-            return Ok();
+            else
+            {
+                return BadRequest("Error while fetching the BootstrapContext. Please contact the administrator.");
+            }
         }
     }
 }

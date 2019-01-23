@@ -502,6 +502,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\CaseInfo.cs" />
+    <Compile Include="Models\SaveEmailPost.cs" />
     <Compile Include="Models\SaveEmailRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
