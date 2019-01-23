@@ -14,6 +14,7 @@ namespace XRMComposeAddinWeb.Models
         public string From { get; set; }
         public string To { get; set; }
         public string InOut { get; set; }
+        [JsonProperty(PropertyName = "CategoryLookupId")]
         public string Category { get; set; }
         public string RelatedItemListId { get; set; }
         public DateTime Received { get; set; }

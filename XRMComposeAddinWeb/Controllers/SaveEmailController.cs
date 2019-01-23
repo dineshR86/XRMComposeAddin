@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-using Microsoft.Graph;
-using Microsoft.Identity.Client;
+﻿using Microsoft.Identity.Client;
 using Newtonsoft.Json;
+using System;
 using System.Configuration;
 using System.IdentityModel.Tokens;
-using System.IO;
+using System.Linq;
+using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using System.Text;
+using System.Threading.Tasks;
+using System.Web.Http;
 using XRMComposeAddinWeb.Models;
 
 namespace XRMComposeAddinWeb.Controllers
@@ -85,15 +81,15 @@ namespace XRMComposeAddinWeb.Controllers
 
                 AuthenticationResult authResult = await cca.AcquireTokenOnBehalfOfAsync(graphScopes, userAssertion);
 
-                // Initialize a Graph client
-                GraphServiceClient graphClient = new GraphServiceClient(
-                    new DelegateAuthenticationProvider(
-                        (requestMessage) =>
-                        {
-                            // Add the Site Collection access token to each outgoing request
-                            requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authResult.AccessToken);
-                            return Task.FromResult(0);
-                        }));
+                //// Initialize a Graph client
+                //GraphServiceClient graphClient = new GraphServiceClient(
+                //    new DelegateAuthenticationProvider(
+                //        (requestMessage) =>
+                //        {
+                //            // Add the Site Collection access token to each outgoing request
+                //            requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authResult.AccessToken);
+                //            return Task.FromResult(0);
+                //        }));
 
                 string requestUrl = string.Format("https://graph.microsoft.com/v1.0/sites/{0}/lists('{1}')/items", siteid, listId);
                 SaveEmailPost data = new SaveEmailPost()

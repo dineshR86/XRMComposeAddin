@@ -1,26 +1,27 @@
-﻿using Microsoft.Graph;
-using Microsoft.Identity.Client;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.IdentityModel.Tokens;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web.Http;
+using Microsoft.Graph;
+using Microsoft.Identity.Client;
+using Newtonsoft.Json;
+using System.Configuration;
+using System.IdentityModel.Tokens;
+using System.IO;
 using System.Net.Http.Headers;
 using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
-using System.Web.Http;
 using XRMComposeAddinWeb.Models;
+using System.Text;
 
 namespace XRMComposeAddinWeb.Controllers
 {
-    public class GetCategoryController : ApiController
+    public class GetCaseFoldersController : ApiController
     {
-        // GET api/<controller>
-        public async Task<IHttpActionResult> Get()
+        [HttpPost]
+        public async Task<IHttpActionResult> Post([FromBody]CaseInfo request)
         {
             if (Request.Headers.Contains("Authorization"))
             {
@@ -61,15 +62,14 @@ namespace XRMComposeAddinWeb.Controllers
                 return BadRequest("Authorization is not valid");
             }
 
-            return await GetCategories();
+            return await GetDocumentLibraryFolders(request);
         }
 
-        private async Task<IHttpActionResult> GetCategories()
+        private async Task<IHttpActionResult> GetDocumentLibraryFolders(CaseInfo driveinfo)
         {
             var bootstrapContext = ClaimsPrincipal.Current.Identities.First().BootstrapContext as BootstrapContext;
-            List<CategoryInfo> cases = new List<CategoryInfo>();
-            var siteId = ConfigurationManager.AppSettings["ida:SiteId"];
-            var categorylistId = ConfigurationManager.AppSettings["ida:CategoryListId"];
+            string driveid = ConfigurationManager.AppSettings["ida:CaseDriveId"];
+            List<FolderInfo> folders = new List<FolderInfo>();
             if (bootstrapContext != null)
             {
                 // Use MSAL to invoke the on-behalf-of flow to exchange token for a Graph token
@@ -94,26 +94,37 @@ namespace XRMComposeAddinWeb.Controllers
                             return Task.FromResult(0);
                         }));
 
+                //new QueryOption("search","contentclass:STS_Site")
                 List<QueryOption> options = new List<QueryOption>()
                 {
-                    new QueryOption("expand","fields($select=id,title)")
+                    new QueryOption("filter","folder ne null"),
+                    new QueryOption("select","id,name,webUrl")
                 };
 
-                var lcategories = await graphClient.Sites[siteId].Lists[categorylistId].Items.Request(options).GetAsync();
+                //var libraryfolders = await graphClient.Drives[driveid].Root.Children.Request(options).GetAsync();
+                string folderName = MakeFileNameValid(string.Format("{0}-{1}", driveinfo.Title, driveinfo.ID));
+                var libraryfolders = await graphClient.Drives[driveid].Root.ItemWithPath(folderName).Children.Request(options).GetAsync();
 
-                foreach (var lcategorie in lcategories)
+
+                foreach (var folder in libraryfolders)
                 {
-                    cases.Add(new CategoryInfo()
+                    folders.Add(new FolderInfo()
                     {
-                        Title = lcategorie.Fields.AdditionalData["Title"].ToString(),
-                        ID = lcategorie.Id
+                        Id = folder.Id,
+                        Name = folder.Name,
+                        WebUrl = folder.WebUrl
                     });
                 }
-
             }
 
-            return ResponseMessage(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(JsonConvert.SerializeObject(cases, Formatting.Indented), Encoding.UTF8, "application/json") });
+            //return Ok();
+            return ResponseMessage(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(JsonConvert.SerializeObject(folders, Formatting.Indented), Encoding.UTF8, "application/json") });
+        }
 
+        private string MakeFileNameValid(string originalFileName)
+        {
+            char[] invalidChars = Path.GetInvalidFileNameChars();
+            return string.Join("", originalFileName.Split(invalidChars, StringSplitOptions.RemoveEmptyEntries)).Replace("&",string.Empty).Replace(" ",string.Empty);
         }
     }
 }

@@ -495,6 +495,7 @@
   <ItemGroup>
     <Compile Include="App_Start\OpenIdConnectCachingSecurityTokenProvider.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\GetCaseFoldersController.cs" />
     <Compile Include="Controllers\GetCasesController.cs" />
     <Compile Include="Controllers\GetCategoryController.cs" />
     <Compile Include="Controllers\SaveEmailController.cs" />
@@ -502,6 +503,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\CaseInfo.cs" />
+    <Compile Include="Models\CategoryInfo.cs" />
+    <Compile Include="Models\FolderInfo.cs" />
     <Compile Include="Models\SaveEmailPost.cs" />
     <Compile Include="Models\SaveEmailRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

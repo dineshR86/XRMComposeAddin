@@ -3,6 +3,7 @@
 
     var messageBanner;
     var ssoToken;
+    var msgbody;
 
   // The Office initialize function must be run each time a new page is loaded.
   Office.initialize = function (reason) {
@@ -14,6 +15,8 @@
             $("#dvSaveEmail").css("display", "block");
             $("#dvSaveAttachments").css("display", "block");
             $("#savesection").css("display", "block");
+            getCategory(ssoToken);
+            getCaseFolders(ssoToken);
         });
 
         $("#chkSaveEmail").change(function(){
@@ -33,8 +36,21 @@
             else {
                 $("#dvFolder").css("display", "none");
             }
-        });
-        
+          });
+
+          $("#btnSave").click(function () {
+              if ($("#chkSaveEmail").is(":checked")) {
+                  saveEmail(ssoToken);
+              }
+          });
+          //saveEmail(ssoToken);
+
+          var item = Office.context.mailbox.item;
+          item.body.getAsync('text', function (result) {
+              if (result.status === 'succeeded') {
+                  msgbody = result.value;
+              }
+          });
     });
     };
 
@@ -46,7 +62,6 @@
                     console.log("token was fetched ");
                     ssoToken = result.value;
                     getCases(result.value);
-                    getCategory(result.value);
 
                 } else if (result.error.code === 13007 || result.error.code === 13005) {
                     console.log("fetching token by force consent");
@@ -93,7 +108,7 @@
     }
 
     function getCategory(token) {
-
+        $(".loader").css("display", "block");
         $.ajax({
             type: "GET",
             url: "api/GetCategory",
@@ -112,6 +127,71 @@
             console.log(error);
             $(".loader").css("display", "none");
         });
+    }
+
+    function getCaseFolders(token) {
+        $(".loader").css("display", "block");
+        var caseInfo = {
+            Title: $("#drpcases").find("option:selected").text(),
+            ID: $("#drpcases").find("option:selected").val()
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "api/GetCaseFolders",
+            headers: {
+                "Authorization": "Bearer " + token
+            },
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(caseInfo)
+        }).done(function (data) {
+            console.log("Fetched the folders");
+            //Office.context.ui.closeContainer();
+            $.each(data, (index, value) => {
+                $("#drpfolders").append('<option value="' + value.Id + '">' + value.Name + '</option>');
+            });
+            $(".loader").css("display", "none");
+        }).fail(function (error) {
+            console.log("Fail to fetch the folders");
+            console.log(error);
+            $("#afailure").text("Failed to fetch the folders").css("display", "block");
+            $(".loader").css("display", "none");
+        });
+    }
+
+    function saveEmail(token) {
+        var item = Office.context.mailbox.item;
+        var emailInfo = {
+            Title: item.subject,
+            Message:msgbody,
+            From: buildEmailAddressString(item.from),
+            To: buildEmailAddressesString(item.to),
+            CategoryLookupId: $("#drpcategories").find("option:selected").val(),
+            RelatedItemListId: "Lists/Cases",
+            RelatedItemId: $("#drpcases").find("option:selected").val(),
+            Received: item.dateTimeCreated.toLocaleString(),
+            ConversationId: item.conversationId,
+            ConversationTopic: item.subject
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "api/SaveEmail",
+            headers: {
+                "Authorization": "Bearer " + ssoToken
+            },
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(emailInfo)
+        }).done(function (data) {
+            console.log("Saved the Email");
+            //Office.context.ui.closeContainer();
+        }).fail(function (error) {
+            console.log("Fail to save the email");
+            console.log(error);
+            $("#afailure").text("Failed to save the attachments").css("display", "block");
+        });
+
+        
     }
 
   // Take an array of AttachmentDetails objects and build a list of attachment names, separated by a line-break.
@@ -135,7 +215,7 @@
   // Format an EmailAddressDetails object as
   // GivenName Surname <emailaddress>
   function buildEmailAddressString(address) {
-    return address.displayName + " &lt;" + address.emailAddress + "&gt;";
+    return address.displayName + ":" + address.emailAddress + ";";
   }
 
   // Take an array of EmailAddressDetails objects and
@@ -145,9 +225,9 @@
       var returnString = "";
 
       for (var i = 0; i < addresses.length; i++) {
-        if (i > 0) {
-          returnString = returnString + "<br/>";
-        }
+        //if (i > 0) {
+        //  returnString = returnString;
+        //}
         returnString = returnString + buildEmailAddressString(addresses[i]);
       }
 
