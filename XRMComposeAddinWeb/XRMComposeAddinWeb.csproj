@@ -498,6 +498,7 @@
     <Compile Include="Controllers\GetCaseFoldersController.cs" />
     <Compile Include="Controllers\GetCasesController.cs" />
     <Compile Include="Controllers\GetCategoryController.cs" />
+    <Compile Include="Controllers\SaveAttachmentController.cs" />
     <Compile Include="Controllers\SaveEmailController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -505,6 +506,7 @@
     <Compile Include="Models\CaseInfo.cs" />
     <Compile Include="Models\CategoryInfo.cs" />
     <Compile Include="Models\FolderInfo.cs" />
+    <Compile Include="Models\SaveAttachmentRequest.cs" />
     <Compile Include="Models\SaveEmailPost.cs" />
     <Compile Include="Models\SaveEmailRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

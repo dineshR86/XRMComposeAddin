@@ -4,6 +4,8 @@
     var messageBanner;
     var ssoToken;
     var msgbody;
+    var mailMode;
+    var isCompose;
 
   // The Office initialize function must be run each time a new page is loaded.
   Office.initialize = function (reason) {
@@ -160,6 +162,7 @@
     }
 
     function saveEmail(token) {
+        $(".loader").css("display", "block");
         var item = Office.context.mailbox.item;
         var emailInfo = {
             Title: item.subject,
@@ -185,32 +188,55 @@
         }).done(function (data) {
             console.log("Saved the Email");
             //Office.context.ui.closeContainer();
+            if ($("#chkSaveAttachment").is(":checked")) {
+                saveAttachment(ssoToken);
+            } else {
+                Office.context.ui.closeContainer();
+                $(".loader").css("display", "none");
+            }
         }).fail(function (error) {
             console.log("Fail to save the email");
             console.log(error);
             $("#afailure").text("Failed to save the attachments").css("display", "block");
+            $(".loader").css("display", "none");
         });
 
         
     }
 
-  // Take an array of AttachmentDetails objects and build a list of attachment names, separated by a line-break.
-  function buildAttachmentsString(attachments) {
-    if (attachments && attachments.length > 0) {
-      var returnString = "";
-      
-      for (var i = 0; i < attachments.length; i++) {
-        if (i > 0) {
-          returnString = returnString + "<br/>";
+    function saveAttachment(token) {
+        var attachments = Office.context.mailbox.item.attachments;
+        var attachmentIds = [];
+        for (var i = 0; i < attachments.length; i++) {
+            attachmentIds.push(Office.context.mailbox.convertToRestId(attachments[i].id, Office.MailboxEnums.RestVersion.v2_0));
         }
-        returnString = returnString + attachments[i].name;
-      }
 
-      return returnString;
+        var attachmentRequest = {
+            attachmentIds: attachmentIds,
+            messageId: Office.context.mailbox.convertToRestId(Office.context.mailbox.item.itemId, Office.MailboxEnums.RestVersion.v2_0),
+            folderName: $("#drpfolders").find("option:selected").text(),
+            caseFolderName: $("#drpcases").find("option:selected").text() + "-" + $("#drpcases").find("option:selected").val()
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "api/SaveAttachment",
+            headers: {
+                "Authorization": "Bearer " + token
+            },
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(attachmentRequest)
+        }).done(function (data) {
+            console.log("Saved the Attachments");
+            Office.context.ui.closeContainer();
+            $(".loader").css("display", "none");
+        }).fail(function (error) {
+            console.log("Fail to save the Attachments");
+            console.log(error);
+            $("#afailure").text("Failed to save the attachments").css("display", "block");
+            $(".loader").css("display", "none");
+        });
     }
-
-    return "None";
-  }
 
   // Format an EmailAddressDetails object as
   // GivenName Surname <emailaddress>
@@ -267,5 +293,9 @@
     $("#notificationBody").text(content);
     messageBanner.showBanner();
     messageBanner.toggleExpansion();
-  }
+    }
+
+    function checkForInOut() {
+
+    }  
 })();
