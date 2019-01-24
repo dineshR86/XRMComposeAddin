@@ -12,6 +12,7 @@
       $(document).ready(function () {
           $(".loader").css("display", "block");
           getAccessToken();
+          checkForInOut();
 
         $("#drpcases").change((event) => {
             $("#dvSaveEmail").css("display", "block");
@@ -174,7 +175,8 @@
             RelatedItemId: $("#drpcases").find("option:selected").val(),
             Received: item.dateTimeCreated.toLocaleString(),
             ConversationId: item.conversationId,
-            ConversationTopic: item.subject
+            ConversationTopic: item.subject,
+            InOut: mailMode
         };
 
         $.ajax({
@@ -296,6 +298,12 @@
     }
 
     function checkForInOut() {
-
+        var userprofile = Office.context.mailbox.userProfile;
+        var item = Office.context.mailbox.item;
+        if (userprofile.emailAddress === item.from.emailAddress) {
+            mailMode = "out";
+        } else {
+            mailMode = "In";
+        }
     }  
 })();
