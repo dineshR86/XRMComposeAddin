@@ -229,8 +229,8 @@
         </bt:LongStrings>
       </Resources>
       <WebApplicationInfo>
-        <Id>17b5b728-5f38-4f56-91b7-feed30a9f973</Id>
-        <Resource>api://localhost:44328/17b5b728-5f38-4f56-91b7-feed30a9f973</Resource>
+        <Id>8677373b-e0e9-4540-b263-16b2a83f3ef9</Id>
+        <Resource>api://localhost:44328/8677373b-e0e9-4540-b263-16b2a83f3ef9</Resource>
         <Scopes>
           <Scope>user.read</Scope>
           <Scope>files.readwrite</Scope>

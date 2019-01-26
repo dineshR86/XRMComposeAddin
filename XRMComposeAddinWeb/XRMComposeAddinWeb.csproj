@@ -196,6 +196,7 @@
     <Content Include="Content\Bootstrap\bootstrap-reboot.min.css.map" />
     <Content Include="Content\Bootstrap\bootstrap.css.map" />
     <Content Include="Content\Bootstrap\bootstrap.min.css.map" />
+    <None Include="Properties\PublishProfiles\XRMSharepointAddin1077377204 - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Functions\FunctionFile.html" />
     <Content Include="Functions\FunctionFile.js" />
