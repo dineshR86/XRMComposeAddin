@@ -10,16 +10,16 @@
   <!-- Begin Basic Settings: Add-in metadata, used for all versions of Office unless override provided. -->
 
   <!-- IMPORTANT! Id must be unique for your add-in, if you reuse this manifest ensure that you change this id to a new GUID. -->
-  <Id>06013abd-eccc-431c-9ff0-ce119444a0c3</Id>
+  <Id>FA4A336E-EDBA-4F30-8D05-6392BB911DC2</Id>
 
   <!--Version. Updates from the store only get triggered if there is a version change. -->
   <Version>1.0.0.0</Version>
-  <ProviderName>[Provider name]</ProviderName>
+  <ProviderName>ankerhansen</ProviderName>
   <DefaultLocale>en-US</DefaultLocale>
   <!-- The display name of your add-in. Used on the store and various places of the Office UI such as the add-ins dialog. -->
-  <DisplayName DefaultValue="XRMComposeAddin" />
-  <Description DefaultValue="XRMComposeAddin"/>
-  <IconUrl DefaultValue="~remoteAppUrl/Images/icon64.png"/>
+  <DisplayName DefaultValue="Gem til SharePoint" />
+  <Description DefaultValue="Gem til SharePoint"/>
+  <IconUrl DefaultValue="https://addin.ankerhansen.dk/Images/icon64.png"/>
 
   <SupportUrl DefaultValue="http://www.contoso.com" />
   <!-- Domains that will be allowed when navigating. For example, if you use ShowTaskpane and then have an href link, navigation will only be allowed if the domain is on this list. -->
@@ -41,7 +41,7 @@
   <FormSettings>
     <Form xsi:type="ItemRead">
       <DesktopSettings>
-        <SourceLocation DefaultValue="~remoteAppUrl/MessageRead.html"/>
+        <SourceLocation DefaultValue="https://addin.ankerhansen.dk/MessageRead.html"/>
         <RequestedHeight>250</RequestedHeight>
       </DesktopSettings>
     </Form>
@@ -122,19 +122,19 @@
 
     <Resources>
       <bt:Images>
-        <bt:Image id="icon16" DefaultValue="~remoteAppUrl/Images/icon16.png"/>
-        <bt:Image id="icon32" DefaultValue="~remoteAppUrl/Images/icon32.png"/>
-        <bt:Image id="icon80" DefaultValue="~remoteAppUrl/Images/icon80.png"/>
+        <bt:Image id="icon16" DefaultValue="https://addin.ankerhansen.dk/Images/icon16.png"/>
+        <bt:Image id="icon32" DefaultValue="https://addin.ankerhansen.dk/Images/icon32.png"/>
+        <bt:Image id="icon80" DefaultValue="https://addin.ankerhansen.dk/Images/icon80.png"/>
       </bt:Images>
       <bt:Urls>
-        <bt:Url id="functionFile" DefaultValue="~remoteAppUrl/Functions/FunctionFile.html"/>
-        <bt:Url id="messageReadTaskPaneUrl" DefaultValue="~remoteAppUrl/MessageRead.html"/>
+        <bt:Url id="functionFile" DefaultValue="https://addin.ankerhansen.dk/Functions/FunctionFile.html"/>
+        <bt:Url id="messageReadTaskPaneUrl" DefaultValue="https://addin.ankerhansen.dk/MessageRead.html"/>
       </bt:Urls>
       <bt:ShortStrings>
-        <bt:String id="groupLabel" DefaultValue="My Add-in Group"/>
-        <bt:String id="customTabLabel"  DefaultValue="My Add-in Tab"/>
-        <bt:String id="paneReadButtonLabel" DefaultValue="Display all properties"/>
-        <bt:String id="paneReadSuperTipTitle" DefaultValue="Get all properties"/>
+        <bt:String id="groupLabel" DefaultValue="SharePoint Addin Group"/>
+        <bt:String id="customTabLabel"  DefaultValue="SharePoint Addin Tab"/>
+        <bt:String id="paneReadButtonLabel" DefaultValue="SharePoint Addin"/>
+        <bt:String id="paneReadSuperTipTitle" DefaultValue="Gem til SharePoint"/>
       </bt:ShortStrings>
       <bt:LongStrings>
         <bt:String id="paneReadSuperTipDescription" DefaultValue="Opens a pane displaying all available properties. This is an example of a button that opens a task pane."/>
@@ -210,27 +210,27 @@
 
       <Resources>
         <bt:Images>
-          <bt:Image id="icon16" DefaultValue="~remoteAppUrl/Images/icon16.png"/>
-          <bt:Image id="icon32" DefaultValue="~remoteAppUrl/Images/icon32.png"/>
-          <bt:Image id="icon80" DefaultValue="~remoteAppUrl/Images/icon80.png"/>
+          <bt:Image id="icon16" DefaultValue="https://addin.ankerhansen.dk/Images/icon16.png"/>
+          <bt:Image id="icon32" DefaultValue="https://addin.ankerhansen.dk/Images/icon32.png"/>
+          <bt:Image id="icon80" DefaultValue="https://addin.ankerhansen.dk/Images/icon80.png"/>
         </bt:Images>
         <bt:Urls>
-          <bt:Url id="functionFile" DefaultValue="~remoteAppUrl/Functions/FunctionFile.html"/>
-          <bt:Url id="messageReadTaskPaneUrl" DefaultValue="~remoteAppUrl/MessageRead.html"/>
+          <bt:Url id="functionFile" DefaultValue="https://addin.ankerhansen.dk/Functions/FunctionFile.html"/>
+          <bt:Url id="messageReadTaskPaneUrl" DefaultValue="https://addin.ankerhansen.dk/MessageRead.html"/>
         </bt:Urls>
         <bt:ShortStrings>
-          <bt:String id="groupLabel" DefaultValue="My Add-in Group"/>
-          <bt:String id="customTabLabel"  DefaultValue="My Add-in Tab"/>
-          <bt:String id="paneReadButtonLabel" DefaultValue="Display all properties"/>
-          <bt:String id="paneReadSuperTipTitle" DefaultValue="Get all properties"/>
+          <bt:String id="groupLabel" DefaultValue="SharePoint Addin Group"/>
+          <bt:String id="customTabLabel"  DefaultValue="SharePoint Addin Tab"/>
+          <bt:String id="paneReadButtonLabel" DefaultValue="SharePoint Addin"/>
+          <bt:String id="paneReadSuperTipTitle" DefaultValue="Gem til SharePoint"/>
         </bt:ShortStrings>
         <bt:LongStrings>
           <bt:String id="paneReadSuperTipDescription" DefaultValue="Opens a pane displaying all available properties. This is an example of a button that opens a task pane."/>
         </bt:LongStrings>
       </Resources>
       <WebApplicationInfo>
-        <Id>8677373b-e0e9-4540-b263-16b2a83f3ef9</Id>
-        <Resource>api://localhost:44328/8677373b-e0e9-4540-b263-16b2a83f3ef9</Resource>
+        <Id>1fe1633e-c07e-4afb-95e8-b253c337afbf</Id>
+        <Resource>api://addin.ankerhansen.dk/1fe1633e-c07e-4afb-95e8-b253c337afbf</Resource>
         <Scopes>
           <Scope>user.read</Scope>
           <Scope>files.readwrite</Scope>
