@@ -109,7 +109,7 @@
                     <bt:Image size="80" resid="icon80" />
                   </Icon>
                   <Action xsi:type="ShowTaskpane">
-                    <SourceLocation resid="messageReadTaskPaneUrl" />
+                    <SourceLocation resid="messageComposeTaskPaneUrl" />
                   </Action>
                 </Control>
               </Group>
@@ -129,12 +129,13 @@
       <bt:Urls>
         <bt:Url id="functionFile" DefaultValue="https://addin.ankerhansen.dk/Functions/FunctionFile.html"/>
         <bt:Url id="messageReadTaskPaneUrl" DefaultValue="https://addin.ankerhansen.dk/MessageRead.html"/>
+        <bt:Url id="messageComposeTaskPaneUrl" DefaultValue="https://addin.ankerhansen.dk/ComposeAddin.html"/>
       </bt:Urls>
       <bt:ShortStrings>
         <bt:String id="groupLabel" DefaultValue="SharePoint Addin Group"/>
         <bt:String id="customTabLabel"  DefaultValue="SharePoint Addin Tab"/>
         <bt:String id="paneReadButtonLabel" DefaultValue="SharePoint Addin"/>
-        <bt:String id="paneReadSuperTipTitle" DefaultValue="Gem til SharePoint"/>
+        <bt:String id="paneReadSuperTipTitle" DefaultValue="Save to SharePoint"/>
       </bt:ShortStrings>
       <bt:LongStrings>
         <bt:String id="paneReadSuperTipDescription" DefaultValue="Opens a pane displaying all available properties. This is an example of a button that opens a task pane."/>
@@ -197,7 +198,7 @@
                       <bt:Image size="80" resid="icon80" />
                     </Icon>
                     <Action xsi:type="ShowTaskpane">
-                      <SourceLocation resid="messageReadTaskPaneUrl" />
+                      <SourceLocation resid="messageComposeTaskPaneUrl" />
                     </Action>
                   </Control>
                 </Group>
@@ -217,12 +218,13 @@
         <bt:Urls>
           <bt:Url id="functionFile" DefaultValue="https://addin.ankerhansen.dk/Functions/FunctionFile.html"/>
           <bt:Url id="messageReadTaskPaneUrl" DefaultValue="https://addin.ankerhansen.dk/MessageRead.html"/>
+          <bt:Url id="messageComposeTaskPaneUrl" DefaultValue="https://addin.ankerhansen.dk/ComposeAddin.html"/>
         </bt:Urls>
         <bt:ShortStrings>
           <bt:String id="groupLabel" DefaultValue="SharePoint Addin Group"/>
           <bt:String id="customTabLabel"  DefaultValue="SharePoint Addin Tab"/>
           <bt:String id="paneReadButtonLabel" DefaultValue="SharePoint Addin"/>
-          <bt:String id="paneReadSuperTipTitle" DefaultValue="Gem til SharePoint"/>
+          <bt:String id="paneReadSuperTipTitle" DefaultValue="Save to SharePoint"/>
         </bt:ShortStrings>
         <bt:LongStrings>
           <bt:String id="paneReadSuperTipDescription" DefaultValue="Opens a pane displaying all available properties. This is an example of a button that opens a task pane."/>
