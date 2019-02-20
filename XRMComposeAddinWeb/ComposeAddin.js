@@ -18,12 +18,21 @@
             });
 
             $("#btnSave").click(function () {
+                $("#afailure").css("display", "none");
                 var mailRecepients = [{
                     "displayName": "",
                     "emailAddress": "ankerh@emails.itsm360cloud.net"
                 }];
 
-                var newSubject = msgSubject + "ID" + $("#drpcases").find("option:selected").val();
+                var selectedCase = $("#drpcases").find("option:selected").val();
+                var selectedCat = $("#drpcategories").find("option:selected").val();
+
+                if (selectedCase.length <= 0 || selectedCat.length <= 0 || msgSubject.length<=0) {
+                    $("#afailure").text("Please select a case and category or a subject is missing").css("display", "block");
+                    return false;
+                }
+
+                var newSubject = msgSubject + " ID" + selectedCase + ", Cat" + selectedCat;
                 Office.context.mailbox.item.subject.setAsync(newSubject, function (asyncResult) {
                     if (asyncResult.status === "failed") {
                         console.log("Action failed with error: " + asyncResult.error.message);
@@ -67,6 +76,7 @@
                             console.log("token was fetched");
                             ssoToken = result.value;
                             getCases(result.value);
+                            
                         }
                         else {
                             console.log("No token was fetched " + result.error.code);
@@ -95,6 +105,29 @@
             console.log("Fetched the Cases data");
             $.each(data, (index, value) => {
                 $("#drpcases").append('<option value="' + value.ID + '">' + value.Title + '</option>');
+            });
+            $(".loader").css("display", "none");
+            getCategory(ssoToken);
+        }).fail(function (error) {
+            console.log("Fail to fetch cases");
+            console.log(error);
+            $(".loader").css("display", "none");
+        });
+    }
+
+    function getCategory(token) {
+        $(".loader").css("display", "block");
+        $.ajax({
+            type: "GET",
+            url: "api/GetCategory",
+            headers: {
+                "Authorization": "Bearer " + token
+            },
+            contentType: "application/json; charset=utf-8"
+        }).done(function (data) {
+            console.log("Fetched the Cases data");
+            $.each(data, (index, value) => {
+                $("#drpcategories").append('<option value="' + value.ID + '">' + value.Title + '</option>');
             });
             $(".loader").css("display", "none");
         }).fail(function (error) {
