@@ -9,5 +9,6 @@ namespace XRMComposeAddinWeb.Models
     {
         public string Title { get; set; }
         public string ID { get; set; }
+        public string FolderPath { get; set; }
     }
 }

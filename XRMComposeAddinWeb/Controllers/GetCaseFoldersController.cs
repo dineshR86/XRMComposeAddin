@@ -103,7 +103,7 @@ namespace XRMComposeAddinWeb.Controllers
 
                 //var libraryfolders = await graphClient.Drives[driveid].Root.Children.Request(options).GetAsync();
                 string folderName = MakeFileNameValid(string.Format("{0}-{1}", driveinfo.Title, driveinfo.ID));
-                var libraryfolders = await graphClient.Drives[driveid].Root.ItemWithPath(folderName).Children.Request(options).GetAsync();
+                var libraryfolders = await graphClient.Drives[driveid].Root.ItemWithPath(driveinfo.FolderPath).Children.Request(options).GetAsync();
 
 
                 foreach (var folder in libraryfolders)

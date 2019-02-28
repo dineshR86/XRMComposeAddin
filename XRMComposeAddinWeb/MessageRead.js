@@ -19,8 +19,23 @@
             $("#dvSaveAttachments").css("display", "block");
             $("#savesection").css("display", "block");
             getCategory(ssoToken);
-            getCaseFolders(ssoToken);
-        });
+            getCaseFolders(ssoToken, 1,"drpfolders");
+          });
+
+          $("#drpfolders").change((event) => {
+              $("#drpfolders1").css("display", "block");
+              getCaseFolders(ssoToken, 2, "drpfolders1");
+          });
+
+          $("#drpfolders1").change((event) => {
+              $("#drpfolders2").css("display", "block");
+              getCaseFolders(ssoToken, 3, "drpfolders2");
+          });
+
+          $("#drpfolders2").change((event) => {
+              $("#drpfolders3").css("display", "block");
+              getCaseFolders(ssoToken, 4, "drpfolders3");
+          });
 
         $("#chkSaveEmail").change(function(){
             if ($(this).is(":checked")) {
@@ -132,11 +147,26 @@
         });
     }
 
-    function getCaseFolders(token) {
+    function getCaseFolders(token,level,control) {
         $(".loader").css("display", "block");
+        var title = $("#drpcases").find("option:selected").text();
+        var id = $("#drpcases").find("option:selected").val();
+        var foldername = "";
+        if (level === 1) {
+            foldername = title + "-" + id;
+        }
+        else if (level === 2) {
+            foldername = title + "-" + id + "/" + $("#drpfolders").find("option:selected").text();
+        } else if (level === 3) {
+            foldername = title + "-" + id + "/" + $("#drpfolders").find("option:selected").text() + "/" + $("#drpfolders1").find("option:selected").text();
+        } else if (level === 4) {
+            foldername = title + "-" + id + "/" + $("#drpfolders").find("option:selected").text() + "/" + $("#drpfolders1").find("option:selected").text() + "/" + $("#drpfolders1").find("option:selected").text();
+        }
+        
         var caseInfo = {
             Title: $("#drpcases").find("option:selected").text(),
-            ID: $("#drpcases").find("option:selected").val()
+            ID: $("#drpcases").find("option:selected").val(),
+            FolderPath: foldername
         };
 
         $.ajax({
@@ -151,13 +181,14 @@
             console.log("Fetched the folders");
             //Office.context.ui.closeContainer();
             $.each(data, (index, value) => {
-                $("#drpfolders").append('<option value="' + value.Id + '">' + value.Name + '</option>');
+                $("#"+control).append('<option value="' + value.Id + '">' + value.Name + '</option>');
             });
             $(".loader").css("display", "none");
         }).fail(function (error) {
             console.log("Fail to fetch the folders");
             console.log(error);
-            $("#afailure").text("Failed to fetch the folders").css("display", "block");
+            $("#" + control).css("display", "none");
+            //$("#afailure").text("Failed to fetch the folders").css("display", "block");
             $(".loader").css("display", "none");
         });
     }
@@ -173,7 +204,7 @@
             CategoryLookupId: $("#drpcategories").find("option:selected").val(),
             RelatedItemListId: "Lists/Cases",
             RelatedItemId: $("#drpcases").find("option:selected").val(),
-            Received: item.dateTimeCreated.toLocaleString(),
+            Received: item.dateTimeCreated,
             ConversationId: item.conversationId,
             ConversationTopic: item.subject,
             InOut: mailMode
@@ -199,7 +230,7 @@
         }).fail(function (error) {
             console.log("Fail to save the email");
             console.log(error);
-            $("#afailure").text("Failed to save the attachments").css("display", "block");
+            $("#afailure").text("Fail to save the email").css("display", "block");
             $(".loader").css("display", "none");
         });
 
@@ -213,10 +244,27 @@
             attachmentIds.push(Office.context.mailbox.convertToRestId(attachments[i].id, Office.MailboxEnums.RestVersion.v2_0));
         }
 
+        var folderpath = $("#drpfolders").find("option:selected").text();
+        var level2 = $("#drpfolders1").find("option:selected").val();
+        var level3 = $("#drpfolders2").find("option:selected").val();
+        var level4 = $("#drpfolders3").find("option:selected").val();
+
+        if (level2.length > 1) {
+            folderpath = folderpath + "/" + $("#drpfolders1").find("option:selected").text();
+        }
+
+        if (level3.length > 1) {
+            folderpath = folderpath + "/" + $("#drpfolders2").find("option:selected").text();
+        }
+
+        if (level4.length > 1) {
+            folderpath = folderpath + "/" + $("#drpfolders3").find("option:selected").text();
+        }
+
         var attachmentRequest = {
             attachmentIds: attachmentIds,
             messageId: Office.context.mailbox.convertToRestId(Office.context.mailbox.item.itemId, Office.MailboxEnums.RestVersion.v2_0),
-            folderName: $("#drpfolders").find("option:selected").text(),
+            folderName: folderpath,
             caseFolderName: $("#drpcases").find("option:selected").text() + "-" + $("#drpcases").find("option:selected").val()
         };
 
