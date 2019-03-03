@@ -10,5 +10,6 @@ namespace XRMComposeAddinWeb.Models
         public string Id { get; set; }
         public string Name { get; set; }
         public string WebUrl { get; set; }
+        public string CaseFolderName { get; set; }
     }
 }

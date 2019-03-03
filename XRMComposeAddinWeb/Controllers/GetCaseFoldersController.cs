@@ -102,8 +102,23 @@ namespace XRMComposeAddinWeb.Controllers
                 };
 
                 //var libraryfolders = await graphClient.Drives[driveid].Root.Children.Request(options).GetAsync();
-                string folderName = MakeFileNameValid(string.Format("{0}-{1}", driveinfo.Title, driveinfo.ID));
-                var libraryfolders = await graphClient.Drives[driveid].Root.ItemWithPath(driveinfo.FolderPath).Children.Request(options).GetAsync();
+                //string folderName = MakeFileNameValid(string.Format("{0}-{1}", driveinfo.Title, driveinfo.ID));
+                string caseFolderName = driveinfo.CaseFolderName;
+                if (driveinfo.Level == "1")
+                {
+                    var casefolders = await graphClient.Drives[driveid].Root.Children.Request(options).GetAsync();
+                    caseFolderName = GetCaseFolderName(casefolders, driveinfo.ID);
+                }
+
+                IDriveItemChildrenCollectionPage libraryfolders;
+                if (driveinfo.Level == "1")
+                {
+                    libraryfolders = await graphClient.Drives[driveid].Root.ItemWithPath(caseFolderName).Children.Request(options).GetAsync();
+                }
+                else
+                {
+                    libraryfolders = await graphClient.Drives[driveid].Root.ItemWithPath(driveinfo.FolderPath).Children.Request(options).GetAsync();
+                }
 
 
                 foreach (var folder in libraryfolders)
@@ -112,7 +127,8 @@ namespace XRMComposeAddinWeb.Controllers
                     {
                         Id = folder.Id,
                         Name = folder.Name,
-                        WebUrl = folder.WebUrl
+                        WebUrl = folder.WebUrl,
+                        CaseFolderName=caseFolderName
                     });
                 }
             }
@@ -124,7 +140,23 @@ namespace XRMComposeAddinWeb.Controllers
         private string MakeFileNameValid(string originalFileName)
         {
             char[] invalidChars = Path.GetInvalidFileNameChars();
-            return string.Join("", originalFileName.Split(invalidChars, StringSplitOptions.RemoveEmptyEntries)).Replace("&",string.Empty).Replace(" ",string.Empty);
+            return string.Join("", originalFileName.Split(invalidChars, StringSplitOptions.RemoveEmptyEntries)).Replace("&", string.Empty).Replace(" ", string.Empty);
+        }
+
+        private string GetCaseFolderName(IDriveItemChildrenCollectionPage caseFolders, string itemid)
+        {
+            string caseFolderName = "";
+            foreach(var folder in caseFolders)
+            {
+                string[] x = folder.Name.Split('-');
+                if (x[x.Length - 1] == itemid)
+                {
+                    caseFolderName = folder.Name;
+                    return caseFolderName;
+                }
+            }
+
+            return caseFolderName;
         }
     }
 }

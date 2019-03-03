@@ -5,7 +5,7 @@
     var ssoToken;
     var msgbody;
     var mailMode;
-    var isCompose;
+    var caseFolderName;
 
   // The Office initialize function must be run each time a new page is loaded.
   Office.initialize = function (reason) {
@@ -14,7 +14,7 @@
           getAccessToken();
           checkForInOut();
 
-        $("#drpcases").change((event) => {
+        $("#drpcases").change(function(event){
             $("#dvSaveEmail").css("display", "block");
             $("#dvSaveAttachments").css("display", "block");
             $("#savesection").css("display", "block");
@@ -22,17 +22,17 @@
             getCaseFolders(ssoToken, 1,"drpfolders");
           });
 
-          $("#drpfolders").change((event) => {
+          $("#drpfolders").change(function (event){
               $("#drpfolders1").css("display", "block");
               getCaseFolders(ssoToken, 2, "drpfolders1");
           });
 
-          $("#drpfolders1").change((event) => {
+          $("#drpfolders1").change(function (event){
               $("#drpfolders2").css("display", "block");
               getCaseFolders(ssoToken, 3, "drpfolders2");
           });
 
-          $("#drpfolders2").change((event) => {
+          $("#drpfolders2").change(function (event){
               $("#drpfolders3").css("display", "block");
               getCaseFolders(ssoToken, 4, "drpfolders3");
           });
@@ -69,6 +69,12 @@
                   msgbody = result.value;
               }
           });
+
+          //authenticator = new OfficeHelpers.Authenticator();
+          //authenticator.endpoints.registerMicrosoftAuth(authConfig.clientId, {
+          //    redirectUrl: authConfig.redirectUrl,
+          //    scope: authConfig.scopes
+          //});
     });
     };
 
@@ -103,6 +109,29 @@
         }
     }
 
+    //function getAccessTokenWithPrompt() {
+    //    authenticator
+    //        .authenticate(OfficeHelpers.DefaultEndpoints.Microsoft, true)
+    //        .then(function (token) {
+    //            // Get callback token, which grants read access to the current message
+    //            // via the Outlook API
+    //            Office.context.mailbox.getCallbackTokenAsync({ isRest: true }, function (result) {
+    //                if (result.status === "succeeded") {
+    //                    console.log("token was fetched ");
+    //                    ssoToken = result.value;
+    //                    getCases(result.value);
+    //                } else {
+    //                    console.log("error while fetching access token " + result.error.code);
+    //                    $(".loader").css("display", "none");
+    //                }
+    //            });
+    //        })
+    //        .catch(function (error) {
+    //            console.log("error while fetching access token " + result.error.code);
+    //            $(".loader").css("display", "none");
+    //        });
+    //}
+
     function getCases(token) {
 
         $.ajax({
@@ -114,7 +143,7 @@
             contentType: "application/json; charset=utf-8"
         }).done(function (data) {
             console.log("Fetched the Cases data");
-            $.each(data, (index, value) => {
+            $.each(data, function(index, value){
                 $("#drpcases").append('<option value="' + value.ID + '">' + value.Title + '</option>');
             });
             $(".loader").css("display", "none");
@@ -136,7 +165,7 @@
             contentType: "application/json; charset=utf-8"
         }).done(function (data) {
             console.log("Fetched the Cases data");
-            $.each(data, (index, value) => {
+            $.each(data, function (index, value){
                 $("#drpcategories").append('<option value="' + value.ID + '">' + value.Title + '</option>');
             });
             $(".loader").css("display", "none");
@@ -156,17 +185,19 @@
             foldername = title + "-" + id;
         }
         else if (level === 2) {
-            foldername = title + "-" + id + "/" + $("#drpfolders").find("option:selected").text();
+            foldername = caseFolderName + "/" + $("#drpfolders").find("option:selected").text();
         } else if (level === 3) {
-            foldername = title + "-" + id + "/" + $("#drpfolders").find("option:selected").text() + "/" + $("#drpfolders1").find("option:selected").text();
+            foldername = caseFolderName + "/" + $("#drpfolders").find("option:selected").text() + "/" + $("#drpfolders1").find("option:selected").text();
         } else if (level === 4) {
-            foldername = title + "-" + id + "/" + $("#drpfolders").find("option:selected").text() + "/" + $("#drpfolders1").find("option:selected").text() + "/" + $("#drpfolders1").find("option:selected").text();
+            foldername = caseFolderName + "/" + $("#drpfolders").find("option:selected").text() + "/" + $("#drpfolders1").find("option:selected").text() + "/" + $("#drpfolders1").find("option:selected").text();
         }
         
         var caseInfo = {
             Title: $("#drpcases").find("option:selected").text(),
             ID: $("#drpcases").find("option:selected").val(),
-            FolderPath: foldername
+            FolderPath: foldername,
+            Level: level,
+            CaseFolderName: caseFolderName
         };
 
         $.ajax({
@@ -180,8 +211,9 @@
         }).done(function (data) {
             console.log("Fetched the folders");
             //Office.context.ui.closeContainer();
-            $.each(data, (index, value) => {
-                $("#"+control).append('<option value="' + value.Id + '">' + value.Name + '</option>');
+            $.each(data, function (index, value){
+                $("#" + control).append('<option value="' + value.Id + '">' + value.Name + '</option>');
+                caseFolderName = value.CaseFolderName;
             });
             $(".loader").css("display", "none");
         }).fail(function (error) {
@@ -265,7 +297,7 @@
             attachmentIds: attachmentIds,
             messageId: Office.context.mailbox.convertToRestId(Office.context.mailbox.item.itemId, Office.MailboxEnums.RestVersion.v2_0),
             folderName: folderpath,
-            caseFolderName: $("#drpcases").find("option:selected").text() + "-" + $("#drpcases").find("option:selected").val()
+            caseFolderName: caseFolderName
         };
 
         $.ajax({

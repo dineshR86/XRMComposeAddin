@@ -13,7 +13,7 @@
             $("#afailure").css("display", "none");
             getAccessToken();
 
-            $("#drpcases").change((event) => {
+            $("#drpcases").change(function (event){
                 $("#savesection").css("display", "block");
             });
 
@@ -103,7 +103,7 @@
             contentType: "application/json; charset=utf-8"
         }).done(function (data) {
             console.log("Fetched the Cases data");
-            $.each(data, (index, value) => {
+            $.each(data, function (index, value){
                 $("#drpcases").append('<option value="' + value.ID + '">' + value.Title + '</option>');
             });
             $(".loader").css("display", "none");
@@ -126,7 +126,7 @@
             contentType: "application/json; charset=utf-8"
         }).done(function (data) {
             console.log("Fetched the Cases data");
-            $.each(data, (index, value) => {
+            $.each(data, function (index, value){
                 $("#drpcategories").append('<option value="' + value.ID + '">' + value.Title + '</option>');
             });
             $(".loader").css("display", "none");

@@ -10,5 +10,7 @@ namespace XRMComposeAddinWeb.Models
         public string Title { get; set; }
         public string ID { get; set; }
         public string FolderPath { get; set; }
+        public string Level { get; set; }
+        public string CaseFolderName { get; set; }
     }
 }
